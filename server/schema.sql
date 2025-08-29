@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS users (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+email TEXT NOT NULL UNIQUE,
+password_hash TEXT NOT NULL,
+role TEXT NOT NULL CHECK (role IN ('host','ngo','volunteer')),
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS listings (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+title TEXT NOT NULL,
+description TEXT,
+quantity TEXT,
+pickup_location TEXT NOT NULL,
+expires_at DATETIME,
+created_by INTEGER NOT NULL,
+status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','claimed','completed','expired')),
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS claims (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+listing_id INTEGER NOT NULL,
+claimant_id INTEGER NOT NULL,
+note TEXT,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+FOREIGN KEY (claimant_id) REFERENCES users(id)
+);

@@ -1,0 +1,10 @@
+{
+  "name": "replate-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "init:db": "node server.js --init-db"
+  }
+}
